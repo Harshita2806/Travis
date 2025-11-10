@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAVIS</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Load Poppins Font (New Font) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+        <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    
+    <!-- Set a custom configuration for Tailwind -->
+    <script>
+              AOS.init({
+                    duration: 1000,
+                    once: true,
+                });
+            
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0F172A', // Slate 900
+                        'card-bg': '#1E293B', // Slate 800
+                        'accent-blue': '#3B82F6', // Blue 500
+                        'light-blue': '#60A5FA', // Blue 400
+                    },
+                    // Switched font to Poppins
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    // Custom keyframes for the fade-in animation
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+
+    
+        /* 3. Define custom font and animations */
+        /* steps part */
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #0d111d;
+            overflow-x: hidden;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInDown {
+            animation: fadeInDown 0.8s ease-out forwards;
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+    
+
+        /* * This creates a full-height layout.
+         * The header (sticky) is the first part.
+         * The snap-container (scrollable) is the second part and grows to fill the rest of the space.
+         */
+        #main-container {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container for the scroll-snapping effect */
+        #snap-container {
+            flex-grow: 1;
+            /* Makes this div fill the remaining height */
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            /* Scroll snapping is active */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+             height: 100vh;
+              scroll-behavior: smooth;
+        }
+
+        /* Hides the scroll bar for WebKit browsers (Chrome, Safari) */
+        #snap-container::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        /* Each section will snap to the start */
+        .snap-section {
+            height: 100%;
+            /* Each section fills the snap-container's height */
+            width: 100%;
+            scroll-snap-align: center;
+            /* Snaps to the top of the section */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Centers content vertically in each section */
+            padding: 3rem 1.5rem;
+            /* Padding for content */
+            flex-shrink: 0;
+            /* Prevents sections from shrinking */
+
+            /* Initial state for JavaScript controlled animation */
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out,  transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+
+
+
+        /* Class added by JS when element is in view */
+        .snap-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Base fade-in and fade-down animations for the sticky header (preserved) */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .animate-fadeInDown {
+            animation: fadeInDown 1s ease-out forwards;
+        }
+
+        /* 4. Style for the dashed icons */
+        .dashed-icon {
+            stroke-dasharray: 3 2;
+        }
+
+        /* 5. Glowing effect for numbers */
+        .glowing-number {
+            text-shadow: 0 0 12px rgba(59, 130, 246, 0.5), 0 0 25px rgba(59, 130, 246, 0.3);
+        }
+
+          /* steps part END */
+
+
+          /* TL part start*/
+
+     
+
+          /* Central traffic light floating animation */
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll reveal animations */
+        @keyframes slideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideRight {
+            0% {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Fade + scale animation (title + center image) */
+        @keyframes fadeScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+   /* TL part end*/
+
+        /* Animation utility classes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        /* --- Flowchart Animation Styles --- */
+
+        /* This class is added by JS when the section is in view */
+        #flowchart.animate-flow #center-node {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        #flowchart.animate-flow #node-container {
+            opacity: 1;
+        }
+
+        #flowchart.animate-flow #flow-lines {
+            opacity: 0.5;
+            /* Soft line opacity */
+        }
+
+        /* Staggered animation for each card */
+        #flowchart.animate-flow .node-card:nth-child(1) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 300ms;
+            /* 0.3s */
+        }
+
+        #flowchart.animate-flow .node-card:nth-child(2) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 400ms;
+            /* 0.4s */
+        }
+
+        #flowchart.animate-flow .node-card:nth-child(3) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 500ms;
+            /* 0.5s */
+        }
+
+        #flowchart.animate-flow .node-card:nth-child(4) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 600ms;
+            /* 0.6s */
+        }
+
+        #flowchart.animate-flow .node-card:nth-child(5) {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 700ms;
+            /* 0.7s */
+        }
+
+        /* Line drawing animation */
+        #flowchart.animate-flow #flow-lines line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: drawLine 1s ease-out forwards;
+        }
+
+        /* Staggered line drawing */
+        #flowchart.animate-flow #flow-lines #line-1 {
+            animation-delay: 300ms;
+        }
+
+        #flowchart.animate-flow #flow-lines #line-2 {
+            animation-delay: 400ms;
+        }
+
+        #flowchart.animate-flow #flow-lines #line-3 {
+            animation-delay: 500ms;
+        }
+
+        #flowchart.animate-flow #flow-lines #line-4 {
+            animation-delay: 600ms;
+        }
+
+        #flowchart.animate-flow #flow-lines #line-5 {
+            animation-delay: 700ms;
+        }
+
+        @keyframes drawLine {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+
+
+        @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fadeInUp {
+        /* 'forwards' ensures it stays visible after animating */
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* travis animation */
+@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fadeInUp {
+        /* 'forwards' ensures it stays visible after animating */
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+
+        /* meet my team */
+
+       /* Base styles for the horizontal carousel and animation */
+        .carousel-container {
+            /* Enable smooth scrolling for button clicks */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+            overflow-x: scroll;
+            /* Hide the scrollbar */
+            scrollbar-width: none; /* Firefox */
+        }
+        .carousel-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        /* Card styles for carousel items */
+        .carousel-item {
+            /* Set flexible width based on screen size: show 1.5 cards on mobile */
+            flex-shrink: 0;
+            width: 90%; /* Default for very small screens */
+            padding-right: 1.5rem; /* Space between cards (1.5rem margin) */
+            
+            /* Add base transition properties */
+            transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.8s ease, border-color 0.4s ease;
+            
+            /* Initial state for staggered load animation */
+            opacity: 0;
+            transform: translateY(20px);
+            
+            /* Subtle initial shadow (glowing backdrop shadow effect) */
+            box-shadow: 0 0 10px 0 rgba(59, 130, 246, 0.2);
+            border-color: rgba(30, 41, 59, 1); /* Initial border color */
+        }
+
+        /* Responsive width adjustments (UPDATED FOR WIDER SLIDES) */
+        @media (min-width: 640px) {
+            .carousel-item { width: 50%; } /* sm: Show 2 slides */
+        }
+        @media (min-width: 1024px) {
+            .carousel-item { width: 33.3333%; } /* lg: Show 3 slides (WIDER) */
+        }
+
+
+        /* Glowing Hover Effect */
+        .carousel-item:hover {
+            transform: translateY(-5px);
+            /* Strong glowing blue shadow */
+            box-shadow: 0 0 30px 0 rgba(96, 165, 250, 0.6); 
+            border-color: rgba(96, 165, 250, 1); /* Bright border highlight */
+        }
+
+        /* Utility class to be added by JS for staggered load animation */
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header initial state for scroll animation */
+        #header-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        /* Header animation class */
+        .header-animated {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+
+                /* 3. Define custom font and animations */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+        /* steps part */
+ 
+
+        /* --- NEW STYLES FOR FAQ SECTION --- */
+
+        /* Styles for the accordion item */
+        .faq-item {
+            background-color: #1a1e24;
+            /* card-dark */
+            border: 1px solid #2f333a;
+            transition: all 0.3s ease-out;
+            will-change: transform, border-color;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Styles for the OPEN accordion item */
+        .faq-item.open {
+            border-color: #2563eb;
+            /* app-blue */
+            background-color: #1f2329;
+            /* Slightly lighter dark */
+        }
+
+        /* Styles for the answer (hidden by default) */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 1.5rem;
+            /* 0 padding when closed */
+        }
+
+        /* Styles for the OPEN answer */
+        .faq-answer.open {
+            max-height: 300px;
+            /* Adjust as needed */
+            padding-top: 0.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        /* Styles for the rotating icon */
+        .faq-item svg {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .faq-item svg.rotate-90 {
+            transform: rotate(90deg);
+        }
+
+        /* --- NEW STYLES FOR SCROLL ANIMATION --- */
+
+        /* Initial state for the hidden groups */
+        .faq-group-2,
+        .faq-group-3 {
+            opacity: 0;
+            transform: translateY(30px);
+            /* Slower transition for better visibility */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+
+        /* Final state when 'visible' class is added */
+        .faq-group-2.visible,
+        .faq-group-3.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Style for the sticky image placeholder */
+        #faq-sticky-image {
+            /* Optional: Add a subtle floating animation */
+            animation: float-animation 4s ease-in-out infinite;
+        }
+
+        @keyframes float-animation {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+    </style>
+</head>
+
+<body class="text-white">
+
+
+    <!-- ✅ HERO SECTION WITH FULL BACKGROUND VIDEO -->
+    <section class="relative h-screen w-full overflow-hidden">
+
+        <!-- Background Video (auto play / loop / muted required for autoplay) -->
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
+            <source src="video.mp4" type="video/mp4" />
+        </video>
+
+        <!-- Overlay Darkness -->
+        <div class="absolute inset-0 bg-black/60"></div>
+
+        <!-- Gradient Glow -->
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-800/40 via-transparent to-blue-800/40"></div>
+
+        <!-- Header -->
+        <header class="relative z-20 w-full max-w-7xl mx-auto py-6 px-6 md:px-10 opacity-0 animate-fadeInDown">
+            <nav class="flex justify-between items-center">
+                <a href="#" class="flex items-center gap-2 text-xl font-bold">
+                  
+                    TRAVIS
+                </a>
+
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#" class="text-gray-300 hover:text-white">About</a>
+                    <a href="#" class="text-gray-300 hover:text-white">How It Works?</a>
+                    <a href="#" class="text-gray-300 hover:text-white">Team</a>
+                    <a href="#" class="text-gray-300 hover:text-white">Pricing</a>
+                </div>
+
+                <a href="#"
+                    class="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2.5 px-5 rounded-lg">
+                    View Demo
+                </a>
+
+                <button class="md:hidden p-2">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+                    </svg>
+                </button>
+            </nav>
+        </header>
+
+
+
+        <!-- Hero Content -->
+        <main class="relative z-20 grid grid-cols-1 md:grid-cols-2 h-full">
+
+            <!-- Text -->
+            <div class="py-12 md:py-24 flex flex-col justify-center px-6 md:px-12 lg:px-24">
+                <h1 class="text-3xl md:text-5xl font-bold mb-6 opacity-0 animate-fadeInUp"
+                    style="animation-delay: 0.2s; ">
+                    AI-Powered Smart 
+                </h1>
+                <h1 class="text-3xl md:text-5xl font-bold mb-6 opacity-0 animate-fadeInUp"
+                    style="animation-delay: 0.2s; ">
+                     Traffic Management
+                </h1>
+<h1 class="text-5xl md:text-7xl font-bold mb-6">
+    <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.2s;">T</span>
+    <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.3s;">R</span>
+    <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.4s;">A</span>
+    <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.5s;">V</span>
+    <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.6s;">I</span>
+    <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.7s;">S</span>
+</h1>
+    
+    <p class="text-2xl md:text-3xl text-gray-300 mb-10">
+        <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.4s;">See.</span>
+        <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.6s;">Predict.</span>
+        <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 0.8s;">Optimize.</span>
+        <span class="inline-block opacity-0 animate-fadeInUp" style="animation-delay: 1.0s;">Redesign.</span>
+    </p>
+
+                <div class="flex flex-wrap gap-4 opacity-0 animate-fadeInUp" style="animation-delay: 0.6s;">
+                    <a href="#" class="bg-blue-600 hover:bg-blue-700 py-3 px-7 rounded-lg text-lg"> Start Demo</a>
+                    <a href="#" class="bg-gray-700 hover:bg-gray-600 py-3 px-7 rounded-lg text-lg"> View Dashboard</a>
+                    <a href="#" class="text-gray-300 hover:text-white py-3 px-7 text-lg"> Learn More</a>
+                </div>
+            </div>
+
+            <!-- Empty Right Placeholder (kept for your layout future use) -->
+            <div class="relative w-full h-full rounded-l-2xl overflow-hidden opacity-0 animate-fadeIn"
+                style="animation-delay: 0.3s;">
+            </div>
+
+        </main>
+    </section>
+
+
+
+
+    <!-- ✅ EXISTING CARD GRID + FLOWCHART (UNCHANGED BELOW) -->
+<!-- FLOWCHART EXPANDING ON SCROLL (REPLACEMENT) -->
+<section id="flowchart" class="relative w-full py-28 px-6 bg-[#0d111d] overflow-hidden">
+
+    <style>
+        .line-glow {
+            /* Adds a soft glow to the SVG lines */
+            filter: drop-shadow(0 0 8px rgba(37, 99, 235, 0.6));
+        }
+    </style>
+
+    <div class="max-w-5xl mx-auto text-center relative">
+
+        <div id="center-node" class="relative z-10 mx-auto w-64 h-24 flex flex-col justify-center items-center
+              border border-blue-300/50 rounded-xl shadow-2xl shadow-blue-500/40 backdrop-blur-sm
+                text-2xl font-semibold opacity-0 scale-75 transition-all duration-700">
+            Travis
+        </div>
+
+        <div id="node-container" class="relative z-10 mt-16 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-12
+                transition-all duration-700">
+
+            <div class="node-card opacity-0 translate-y-6 transition-all duration-700">
+                <div
+                    class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl text-center text-lg font-semibold h-full">
+                 
+                    <h4 class="mt-2">Vision AI</h4>
+                </div>
+            </div>
+
+            <div class="node-card opacity-0 translate-y-6 transition-all duration-700">
+                <div
+                    class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl text-center text-lg font-semibold h-full">
+                 
+                    <h4 class="mt-2">Predictive Model</h4>
+                </div>
+            </div>
+
+            <div class="node-card opacity-0 translate-y-6 transition-all duration-700">
+                <div
+                    class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl text-center text-lg font-semibold h-full">
+                 
+                    <h4 class="mt-2">Signal Optimizer</h4>
+                </div>
+            </div>
+
+            <div class="node-card opacity-0 translate-y-6 transition-all duration-700">
+                <div
+                    class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl text-center text-lg font-semibold h-full">
+          
+                    <h4 class="mt-2">Routing Engine</h4>
+                </div>
+            </div>
+
+            <div class="node-card opacity-0 translate-y-6 transition-all duration-700">
+                <div
+                    class="bg-gray-800 p-6 rounded-xl border border-gray-700 shadow-xl text-center text-lg font-semibold h-full">
+                  
+                    <h4 class="mt-2">Urban Designer</h4>
+                </div>
+            </div>
+        </div>
+
+        <svg id="flow-lines"
+            class="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-700 pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+
+            <line id="line-1" x1="50%" y1="100" x2="10%" y2="320" stroke="#2563eb" stroke-opacity="0.7" stroke-width="2"
+                class="line-glow" />
+            <line id="line-2" x1="50%" y1="100" x2="30%" y2="320" stroke="#2563eb" stroke-opacity="0.7" stroke-width="2"
+                class="line-glow" />
+            <line id="line-3" x1="50%" y1="100" x2="50%" y2="320" stroke="#2563eb" stroke-opacity="0.7" stroke-width="2"
+                class="line-glow" />
+            <line id="line-4" x1="50%" y1="100" x2="70%" y2="320" stroke="#2563eb" stroke-opacity="0.7" stroke-width="2"
+                class="line-glow" />
+            <line id="line-5" x1="50%" y1="100" x2="90%" y2="320" stroke="#2563eb" stroke-opacity="0.7" stroke-width="2"
+                class="line-glow" />
+        </svg>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="max-w-[1300px] mx-auto px-6 py-20 text-center">
+
+    <!-- Dots indicator -->
+    <div class="flex justify-center gap-2 mb-4 animate-[fadeScale_0.8s_ease-out]">
+        <span class="w-2 h-2 rounded-full bg-[#0abaff]"></span>
+        <span class="w-2 h-2 rounded-full bg-[#0abaff]"></span>
+        <span class="w-2 h-2 rounded-full bg-[#0abaff]"></span>
+    </div>
+
+<!-- Title -->
+<h2
+    class="text-4xl md:text-5xl font-[Montserrat] font-bold bg-gradient-to-r from-[#4ac4ff] to-[#007bff] bg-clip-text text-transparent animate-[fadeScale_0.8s_ease-out]">
+    Intelligent Traffic Management System
+</h2>
+
+<p class="text-gray-400 text-lg max-w-2xl mx-auto mt-4 animate-[slideUp_0.9s_ease-out]">
+    AI-powered solution for urban traffic optimization and smart city infrastructure management
+</p> 
+
+
+    <!-- GRID LAYOUT -->
+    <div class="grid grid-cols-[1fr_auto_1fr] grid-rows-[auto_auto_auto] gap-6 justify-items-center mt-16">
+
+        <!-- Left Top -->
+        <div class="feature-card glow-card flex flex-col items-center justify-center text-center p-6 rounded-xl 
+        bg-[#182235]/40 backdrop-blur border border-[#00c6ff]/40 shadow-[0_0_15px_#00eaff] hover:shadow-[0_0_35px_#00eaff] 
+        transition-all duration-500 opacity-0" data-anim="slideLeft">
+            <img src="model1.png" class="w-20 mb-4 object-contain" />
+            <h4 class="text-xl font-[Montserrat] font-semibold">Vision AI</h4>
+            <p class="text-gray-400 text-sm">Real-time vehicle detection and classification using computer vision
+                technology.</p>
+        </div>
+
+        <!-- Center Image -->
+        <div class="row-span-3 flex justify-center items-center -mt-4 animate-[fadeScale_1s_ease-out]">
+            <img src="trafficlight.png" class="w-[380px] h-[460px] animate-[float_6s_ease-in-out_infinite]" />
+        </div>
+
+        <!-- Right Top -->
+        <div class="feature-card glow-card flex flex-col items-center justify-center text-center p-6 rounded-xl 
+        bg-[#182235]/40 backdrop-blur border border-[#00c6ff]/40 shadow-[0_0_15px_#00eaff] hover:shadow-[0_0_35px_#00eaff]
+        transition-all duration-500 opacity-0" data-anim="slideRight">
+            <img src="model2.png" class="w-20 mb-4 object-contain" />
+            <h4 class="text-xl font-[Montserrat] font-semibold">Routing Engine</h4>
+            <p class="text-gray-400 text-sm">Intelligent route calculation to find fastest paths and reduce travel
+                time.</p>
+        </div>
+
+        <!-- Left Middle -->
+        <div class="feature-card glow-card flex flex-col items-center justify-center text-center p-6 rounded-xl 
+        bg-[#182235]/40 backdrop-blur border border-[#00c6ff]/40 shadow-[0_0_15px_#00eaff] hover:shadow-[0_0_35px_#00eaff]
+        transition-all duration-500 opacity-0" data-anim="slideLeft">
+            <img src="model3.png" class="w-20 mb-4 object-contain" />
+            <h4 class="text-xl font-[Montserrat] font-semibold">Predictive Model</h4>
+            <p class="text-gray-400 text-sm">Advanced algorithms forecast traffic congestion patterns and predict
+                bottlenecks.</p>
+        </div>
+
+        <!-- Right Middle -->
+        <div class="feature-card glow-card flex flex-col items-center justify-center text-center p-6 rounded-xl 
+        bg-[#182235]/40 backdrop-blur border border-[#00c6ff]/40 shadow-[0_0_15px_#00eaff] hover:shadow-[0_0_35px_#00eaff]
+        transition-all duration-500 opacity-0" data-anim="slideRight">
+            <img src="model4.png" class="w-20 mb-4 object-contain" />
+            <h4 class="text-xl font-[Montserrat] font-semibold">Urban Designer</h4>
+            <p class="text-gray-400 text-sm">Data-driven recommendations for road infrastructure improvements and
+                designs.</p>
+        </div>
+
+        <!-- Bottom Middle — (space issue solved ✅) -->
+        <div class="col-span-3 flex justify-center -mt-6">
+            <div class="feature-card glow-card flex flex-col items-center justify-center text-center max-w-sm p-6 rounded-xl 
+            bg-[#182235]/40 backdrop-blur border border-[#00c6ff]/40 shadow-[0_0_15px_#00eaff] hover:shadow-[0_0_35px_#00eaff]
+            transition-all duration-500 opacity-0" data-anim="slideUp">
+                <img src="model5.png" class="w-20 mb-4 object-contain" />
+                <h4 class="text-xl font-[Montserrat] font-semibold">Signal Optimizer</h4>
+                <p class="text-gray-400 text-sm">Dynamic traffic signal timing based on real-time traffic flow data.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+<section>
+    <div id="main-container">
+    
+        <header class="sticky top-0 z-10 bg-[#0d111d] pt-20 pb-12 opacity-0 animate-fadeIn border-b border-gray-800">
+            <div class="flex justify-center items-center mb-6 opacity-0 animate-fadeInDown" style="animation-delay: 0.2s;">
+                <div class="w-2 h-2 bg-blue-600 rounded-full mx-1"></div>
+                <div class="w-2 h-2 bg-blue-600 rounded-full mx-1"></div>
+                <div class="w-2 h-2 bg-blue-600 rounded-full mx-1"></div>
+            </div>
+    
+            <h2 class="text-3xl md:text-5xl font-bold text-center mb-4 opacity-0 animate-fadeInDown"
+                style="animation-delay: 0.4s;">
+                How It Works
+            </h2>
+    
+            <p class="text-lg md:text-xl text-gray-400 text-center max-w-3xl mx-auto opacity-0 animate-fadeInDown"
+                style="animation-delay: 0.6s;">
+                A step-by-step look at our system's workflow, from data ingestion to real-time optimization.
+            </p>
+        </header>
+    
+        <div id="snap-container">
+    
+            <section class="snap-section" data-delay="0.2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10 w-full max-w-5xl mx-auto">
+                    <div class="flex gap-4 md:col-span-1" data-stagger-delay="0">
+                        <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">01</span>
+                        <div class="mt-1">
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25a2.25 2.25 0 01-2.25-2.25v-2.25z" />
+                                </svg>
+                                Start Dashboard
+                            </h4>
+                            <p class="text-base text-gray-400 mt-2">Open the system to get a high-level overview of the
+                                city's traffic network.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 md:col-span-1" data-stagger-delay="200">
+                        <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">02</span>
+                        <div class="mt-1">
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m1-3l1-3m0 0l.5 1.5m-.5-1.5L12 5.25m-2.25 7.5l-1 3m1-3l1-3m0 0l.5 1.5m-.5-1.5L9 5.25m9 7.5l-1 3m1-3l1-3m0 0l.5 1.5m-.5-1.5l-.5-1.5m0 0l-2.25 4.5M12 14.25l.5 1.5m-.5-1.5l-.5-1.5m0 0l-2.25 4.5" />
+                                </svg>
+                                Connect CCTV Feed
+                            </h4>
+                            <p class="text-base text-gray-400 mt-2">Integrate live video streams from existing roadside
+                                cameras into the system.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-4 md:col-span-2" data-stagger-delay="400">
+                        <div class="w-full md:w-1/2">
+                            <div class="flex gap-4">
+                                <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">03</span>
+                                <div class="mt-1">
+                                    <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                        <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        Vision AI Detection
+                                    </h4>
+                                    <p class="text-base text-gray-400 mt-2">Our AI models analyze the feeds to detect
+                                        and classify all vehicles in real-time.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+            <section class="snap-section" data-delay="0.2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10 w-full max-w-5xl mx-auto">
+                    <div class="flex gap-4 md:col-span-1" data-stagger-delay="0">
+                        <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">04</span>
+                        <div class="mt-1">
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v16.5c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V3.375z" />
+                                </svg>
+                                Live Dashboard Update
+                            </h4>
+                            <p class="text-base text-gray-400 mt-2">Traffic density and flow data are instantly
+                                visualized on the main dashboard.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 md:col-span-1" data-stagger-delay="200">
+                        <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">05</span>
+                        <div class="mt-1">
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
+                                </svg>
+                                Predictive Forecasting
+                            </h4>
+                            <p class="text-base text-gray-400 mt-2">The system analyzes trends to predict future
+                                congestion points 30-60 minutes in advance.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-4 md:col-span-2" data-stagger-delay="400">
+                        <div class="w-full md:w-1/2">
+                            <div class="flex gap-4">
+                                <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">06</span>
+                                <div class="mt-1">
+                                    <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                        <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 18H7.5m3-6h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 12H7.5" />
+                                        </svg>
+                                        Signal Optimization
+                                    </h4>
+                                    <p class="text-base text-gray-400 mt-2">Traffic light timings are automatically
+                                        adjusted to clear congestion and improve flow.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+            <section class="snap-section" data-delay="0.2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-10 w-full max-w-5xl mx-auto">
+                    <div class="flex gap-4 md:col-span-1" data-stagger-delay="0">
+                        <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">07</span>
+                        <div class="mt-1">
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9 6.75V.75m0 6V12m0-6H5.25m3.75 0H13.5m0-6V12m0-6H18.75m0 0V.75m0 6H13.5m0 12.75V18m0 2.25V18m0 2.25H18.75m0 0H13.5m-3 0V18m0 2.25V18m0 2.25H5.25m0 0H9m3.75 0H13.5M9 12v6.75m3.75-6.75v6.75" />
+                                </svg>
+                                Smart Routing
+                            </h4>
+                            <p class="text-base text-gray-400 mt-2">Alternative routes are suggested to navigation apps
+                                and emergency services.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 md:col-span-1" data-stagger-delay="200">
+                        <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">08</span>
+                        <div class="mt-1">
+                            <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M16.5 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75" />
+                                </svg>
+                                Urban Design AI
+                            </h4>
+                            <p class="text-base text-gray-400 mt-2">Data is used to suggest long-term road redesigns and
+                                infrastructure planning.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-4 md:col-span-2" data-stagger-delay="400">
+                        <div class="w-full md:w-1/2">
+                            <div class="flex gap-4">
+                                <span class="text-5xl font-bold text-blue-600 opacity-60 glowing-number">09</span>
+                                <div class="mt-1">
+                                    <h4 class="text-xl font-semibold text-white flex items-center gap-3">
+                                        <svg class="w-7 h-7 text-blue-400 dashed-icon" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Results Dashboard
+                                    </h4>
+                                    <p class="text-base text-gray-400 mt-2">View before-and-after metrics to see
+                                        improvements in flow and reduced congestion.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    
+    
+    
+        </div>
+</section>
+
+
+
+
+
+<!-- 
+      =====================================================
+      VIDEO SECTION
+      You can copy this entire <section> block 
+      and paste it into your main index.html file.
+      =====================================================
+    -->
+<section class="w-full py-24 sm:py-32 px-6 bg-[#0d111d]">
+    <div class="max-w-5xl mx-auto text-center">
+
+        <!-- Section Header -->
+        <h2 class="text-4xl md:text-5xl font-bold mb-4 opacity-0 animate-fadeInUp" style="animation-delay: 0.1s;">
+            Watch Travis in Action
+        </h2>
+        <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-3xl mx-auto opacity-0 animate-fadeInUp"
+            style="animation-delay: 0.2s;">
+            See a complete overview of our AI-powered traffic management platform, from live detection to predictive
+            optimization.
+        </p>
+
+        <!-- Video Player Card -->
+        <div class="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl shadow-blue-700/30 overflow-hidden opacity-0 animate-fadeInUp"
+            style="animation-delay: 0.4s;">
+
+            <!-- 
+                  VIDEO PLAYER:
+                  - Replace 'poster' with your video's thumbnail image.
+                  - Replace 'src' with your video file link (.mp4, .webm, etc.)
+                -->
+            <video class="w-full h-auto" controls
+                poster="https://placehold.co/1280x720/0d111d/007bff?text=TRAVIS+Demo+Video" src="Travis.mp4">
+                <!-- Fallback text for older browsers -->
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+    </div>
+</section>
+<!-- End of Video Section -->
+
+
+<!-- 
+      JavaScript for animations (if you use this as a standalone page).
+      If you paste this into index.html, you can delete this script 
+      as your main page already has an observer.
+    -->
+
+<section id="team" class="max-w-7xl mx-auto py-12 md:py-20 font-sans text-white p-4 sm:p-8">
+<header id="header-content" class="text-center mb-24 md:mb-32" data-aos="Slide-Up" data-aos-duration="3000"
+    data-aos-offset="120" data-aos-easing="ease-out-cubic" data-aos-once="true">
+
+    <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-blue-400 mb-4" data-aos="slide-up"
+        data-aos-delay="150">
+        Meet Our Dynamic Team
+    </h2>
+
+    <p class="text-xl text-gray-400 max-w-2xl mx-auto" data-aos="slide-up" data-aos-delay="300">
+        The people behind the mission, driving innovation with passion and expertise.
+    </p>
+</header>
+
+
+    <div class="relative">
+        <div id="team-carousel" class="carousel-container flex pb-4 -mx-4 px-4 overflow-x-auto">
+            <div class="flex-none w-full max-w-sm p-4">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 px-4 sm:px-6 lg:px-8">
+    <h2 class="text-4xl font-extrabold text-white text-center mb-16">Frequently Asked Questions</h2>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+        <div class="lg:col-span-2 space-y-5" id="faq-list-container">
+
+            <div class="space-y-5 faq-group-1">
+                <div class="faq-item rounded-xl overflow-hidden shadow-xl" onclick="toggleFaq(this)">
+                    <button
+                        class="w-full text-left flex items-center justify-between p-6 text-xl font-semibold text-white hover:text-blue-400 transition">
+                        <span>How does the Core Execution Engine (TRAVIS) function?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400">TRAVIS acts as the central orchestrator, receiving data from
+                            all upstream processes (Idea Generation, Prototyping) and executing the final
+                            development and deployment mandates.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item rounded-xl overflow-hidden shadow-xl" onclick="toggleFaq(this)">
+                    <button
+                        class="w-full text-left flex items-center justify-between p-6 text-xl font-semibold text-white hover:text-blue-400 transition">
+                        <span>What is the average duration of a Development Sprint?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400">Our standard sprints run for two weeks (10 business days),
+                            followed by a review, retrospective, and planning session for the next iteration.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-5 faq-group-2" id="faq-group-2">
+                <div class="faq-item rounded-xl overflow-hidden shadow-xl" onclick="toggleFaq(this)">
+                    <button
+                        class="w-full text-left flex items-center justify-between p-6 text-xl font-semibold text-white hover:text-blue-400 transition">
+                        <span>How can I submit new feature requests or feedback?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400">User feedback can be submitted directly through our in-app
+                            portal or by contacting our dedicated support channel mentioned in the footer.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item rounded-xl overflow-hidden shadow-xl" onclick="toggleFaq(this)">
+                    <button
+                        class="w-full text-left flex items-center justify-between p-6 text-xl font-semibold text-white hover:text-blue-400 transition">
+                        <span>Is your system compliant with international data standards?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400">Yes, we prioritize compliance and maintain rigorous adherence
+                            to GDPR, CCPA, and ISO 27001 standards across all our services and data handling
+                            practices.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-5 faq-group-3" id="faq-group-3">
+                <div class="faq-item rounded-xl overflow-hidden shadow-xl" onclick="toggleFaq(this)">
+                    <button
+                        class="w-full text-left flex items-center justify-between p-6 text-xl font-semibold text-white hover:text-blue-400 transition">
+                        <span>What technologies are used in the Design Prototyping phase?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400">We utilize industry-leading tools like Figma and ProtoPie to
+                            create interactive, high-fidelity mockups that accurately simulate the final user
+                            experience.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item rounded-xl overflow-hidden shadow-xl" onclick="toggleFaq(this)">
+                    <button
+                        class="w-full text-left flex items-center justify-between p-6 text-xl font-semibold text-white hover:text-blue-400 transition">
+                        <span>How do you handle security and threat detection?</span>
+                        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p class="text-gray-400">Our dedicated operations team maintains 24/7 monitoring,
+                            leveraging advanced AI-powered threat detection tools to identify and neutralize
+                            vulnerabilities in real-time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class=" sticky top-20 bg-[#1a1e24] p-6 rounded-xl shadow-2xl border border-gray-700">
+                <h3 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-3">Operational
+                    Insights</h3>
+                <img src="trafficcongestion.png" alt="Placeholder image showing traffic congestion data"
+                    class="w-full rounded-lg mb-4 opacity-90" id="faq-sticky-image"
+                    onerror="this.onerror=null;this.src='https://placehold.co/800x600/1e293b/94a3b8?text=Operational+Insights+Image'" />
+
+                <p class="text-gray-400 text-md">
+                    Visualizing data flow bottlenecks is crucial. Just as urban planning tackles traffic
+                    congestion, we optimize our workflow to prevent process jams and ensure maximum velocity.
+                    </D>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+        <footer class="mt-20 py-16 bg-[#000000] border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-gray-700 pb-12 mb-8">
+        
+                    <div>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <svg class="w-6 h-6 text-app-blue" fill="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 1.5l-8 4.5v12l8 4.5 8-4.5v-12l-8-4.5zm0 2.6l6 3.4v9.6l-6 3.4-6-3.4v-9.6l6-3.4zm0 4.7l-4 2.2v4.6l4 2.2 4-2.2v-4.6l-4-2.2z">
+                                </path>
+                            </svg>
+                            <span class="text-xl font-bold">SecureFlow</span>
+                        </div>
+                        <p class="text-gray-400 max-w-xs text-sm">
+                            Protecting all businesses with 24/7 monitoring, threat detection, and compliance-ready
+                            solutions.
+                        </p>
+                        <div class="flex space-x-4 mt-6">
+                            <a href="#"
+                                class="w-8 h-8 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:border-app-blue hover:text-app-blue transition">F</a>
+                            <a href="#"
+                                class="w-8 h-8 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:border-app-blue hover:text-app-blue transition">X</a>
+                            <a href="#"
+                                class="w-8 h-8 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:border-app-blue hover:text-app-blue transition">I</a>
+                        </div>
+                    </div>
+        
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4 text-white uppercase tracking-wider">Popular Links</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-app-blue transition">About</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Case Study</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Pricing</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Contact</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Blog</a></li>
+                        </ul>
+                    </div>
+        
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4 text-white uppercase tracking-wider">Utility Pages</h4>
+                        <ul class="space-y-2 text-gray-400">
+                            <li><a href="#" class="hover:text-app-blue transition">Style Guide</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Licenses</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Changelog</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Protected</a></li>
+                            <li><a href="#" class="hover:text-app-blue transition">Not Found</a></li>
+                        </ul>
+                    </div>
+        
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4 text-white uppercase tracking-wider">Get In Touch</h4>
+                        <p class="text-app-light-blue mb-1">info@secureflow.com</p>
+                        <p class="text-app-light-blue mb-4">+44 33 9472 9434</p>
+        
+                        <div class="flex">
+                            <input type="email" placeholder="Enter Your Email"
+                                class="w-full p-3 rounded-l-lg bg-[#1a1e24] text-white border border-gray-700 focus:border-app-blue focus:ring-1 focus:ring-app-blue outline-none" />
+                            <button
+                                class="bg-app-blue p-3 rounded-r-lg hover:bg-app-blue/80 transition flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white transform rotate-45" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+                    <p>COPYRIGHT © SECUREFLOW</p>
+                    <p>DESIGNED BY VICTORFLOW | POWERED BY WEBFLOW</p>
+                </div>
+        
+            </div>
+        </footer>
+
+
+
+
+
+
+
+<script>
+
+
+
+     //faq
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- FAQ Scroll Animation Script (MODIFIED) ---
+            const faqGroup2 = document.getElementById('faq-group-2');
+            const faqGroup3 = document.getElementById('faq-group-3'); // New group
+
+            const faqObserverOptions = {
+                root: null,
+                rootMargin: '0px 0px -100px 0px',
+                threshold: 0.1
+            };
+
+            const faqObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Reveal the group that entered the viewport
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, faqObserverOptions);
+
+            // Observe both groups
+            if (faqGroup2) {
+                faqObserver.observe(faqGroup2);
+            }
+            if (faqGroup3) {
+                faqObserver.observe(faqGroup3);
+            }
+
+        }); // End of DOMContentLoaded
+
+        // --- FAQ Accordion Toggle Function (Existing) ---
+        function toggleFaq(item) {
+            const answer = item.querySelector('.faq-answer');
+            const icon = item.querySelector('svg');
+
+            // Close other open FAQs
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('open')) {
+                    otherItem.classList.remove('open');
+                    otherItem.querySelector('.faq-answer').classList.remove('open');
+                    otherItem.querySelector('svg').classList.remove('rotate-90');
+                }
+            });
+
+            // Toggle current FAQ
+            item.classList.toggle('open');
+            answer.classList.toggle('open');
+            icon.classList.toggle('rotate-90'); // Rotate arrow for open state
+        }
+
+
+
+
+              // Define team members data (NOW LIMITED TO 4)
+                const teamMembers = [
+                    {
+                        name: "Elias Vance",
+                        role: "Chief Executive Officer",
+                        description: "Visionary leader focused on strategic growth and future innovation in the tech space.",
+                        initials: "EV",
+                        // Uniform color for initials, using gray background and light blue text
+                        initialsClasses: "bg-gray-700 text-light-blue"
+                    },
+                    {
+                        name: "Seraphina Key",
+                        role: "Lead Systems Architect",
+                        description: "Mastermind behind our technology stack, ensuring scalable and robust solutions.",
+                        initials: "SK",
+                        initialsClasses: "bg-gray-700 text-light-blue"
+                    },
+                    {
+                        name: "Kai Lawson",
+                        role: "Head of Product Design",
+                        description: "Driving UI/UX excellence and focusing on user-centric product development strategies.",
+                        initials: "KL",
+                        initialsClasses: "bg-gray-700 text-light-blue"
+                    },
+                    {
+                        name: "Anya Sharma",
+                        role: "Director of Marketing",
+                        description: "Expert in brand strategy, digital performance growth, and market positioning.",
+                        initials: "AS",
+                        initialsClasses: "bg-gray-700 text-light-blue"
+                    }
+                ];
+
+                const teamCarousel = document.getElementById('team-carousel');
+                const headerContent = document.getElementById('header-content');
+
+                // Function to create a single team card element
+                function createTeamCard(member, index) {
+                    const cardWrapper = document.createElement('div');
+                    // 'carousel-item' class handles responsive width and spacing
+                    cardWrapper.className = `carousel-item`;
+
+                    cardWrapper.innerHTML = `
+                <div class="h-full bg-card-bg p-6 rounded-xl shadow-lg border border-gray-700/50 cursor-pointer">
+                    <div class="flex items-center space-x-6 mb-4">
+                        <!-- Avatar Placeholder - Monochromatic theme -->
+                        <div class="flex-shrink-0 w-16 h-16 rounded-full ${member.initialsClasses} flex items-center justify-center text-xl font-bold shadow-md ring-4 ring-light-blue/20">
+                            ${member.initials}
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-white">${member.name}</h3>
+                            <p class="text-light-blue font-medium text-sm">${member.role}</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 mt-4 text-base">${member.description}</p>
+                    <div class="mt-6 flex justify-end space-x-3 text-gray-400">
+                        <!-- Social Icons Placeholder (using SVGs) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hover:text-light-blue transition-colors duration-200">
+                            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c-2.4 0-4.7 0-7 0a3.8 3.8 0 0 0-1 3.2v4"></path>
+                            <path d="M12 11c-1.6 0-3-1.4-3-3s1.4-3 3-3 3 1.4 3 3-1.4 3-3 3z"></path>
+                            <path d="M19 12h3"></path>
+                            <path d="M22 10v4"></path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hover:text-light-blue transition-colors duration-200">
+                            <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2.5-3.3 0-5.7-2.7-5.7-5.9 0-.4 0-.8.1-1.2 1.6.9 3.5 1.4 5.2 1.2-3.1-3.5-3.2-8.5-.7-10.3 3.4 4.2 7.7 9.8 14.5 9.4"></path>
+                        </svg>
+                    </div>
+                </div>
+            `;
+                    return cardWrapper;
+                }
+
+                // --- Core Animation Logic ---
+
+                // 1. Staggered Card Load Animation
+                function loadAndAnimateCards() {
+                    teamMembers.forEach((member, index) => {
+                        const card = createTeamCard(member, index);
+                        teamCarousel.appendChild(card);
+
+                        // Apply staggered fade-in animation
+                        setTimeout(() => {
+                            card.classList.add('is-visible');
+                        }, 150 * index); // 150ms delay per card
+                    });
+                }
+
+                // 2. Automatic Carousel Movement
+                let scrollSpeed = 0.5; // Adjust this value to change speed
+                let scrollDirection = 1; // 1 for right, -1 for left
+
+                function autoScroll() {
+                    // If the user is actively scrolling/touching, stop the auto scroll briefly
+                    if (teamCarousel.scrollLeft === 0) {
+                        // At the start, scroll right
+                        scrollDirection = 1;
+                    } else if (teamCarousel.scrollLeft + teamCarousel.clientWidth >= teamCarousel.scrollWidth - 1) {
+                        // At the end (minus 1 for floating point safety), scroll left
+                        scrollDirection = -1;
+                    }
+
+                    teamCarousel.scrollLeft += scrollSpeed * scrollDirection;
+                    requestAnimationFrame(autoScroll);
+                }
+
+                // 3. Header Animation on Scroll (Intersection Observer)
+                function setupHeaderObserver() {
+                    const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                // Element is visible, apply the animation class
+                                entry.target.classList.add('header-animated');
+                                // Stop observing once it has animated
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    }, {
+                        // Options for observer
+                        root: null, // relative to viewport
+                        rootMargin: '0px',
+                        threshold: 0.1 // Trigger when 10% of element is visible
+                    });
+
+                    // Start observing the header content
+                    observer.observe(headerContent);
+                }
+
+                // Initialize on window load
+                window.onload = () => {
+                    loadAndAnimateCards();
+                    autoScroll(); // Start automatic movement
+                    setupHeaderObserver(); // Start observing for header animation
+                };
+
+    
+    
+    const animatedElements = document.querySelectorAll('.animate-fadeInUp');
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = 'running';
+                sectionObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    animatedElements.forEach(el => {
+        sectionObserver.observe(el);
+    });
+
+
+
+    // flowchart
+
+        const flowchartSection = document.getElementById('flowchart');
+
+    // Renamed observer to avoid conflicts
+    const flowchartObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-flow');
+                    // Optional: Stop observing after animation triggers
+                    // flowchartObserver.unobserve(entry.target);
+                }
+                // Optional: Remove class if it scrolls out of view
+                // else {
+                //     entry.target.classList.remove('animate-flow');
+                // }
+            });
+    }, {
+            root: null, // observes intersections relative to the viewport
+        threshold: 0.3 // Trigger when 30% of the element is visible
+    });
+
+        // Start observing the flowchart section
+        flowchartObserver.observe(flowchartSection);
+ 
+
+
+    // this is TL part
+    const cards = document.querySelectorAll(".feature-card");
+
+    const reveal = new IntersectionObserver(
+        (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const animType = entry.target.dataset.anim;
+                    entry.target.style.animation = `${animType} .9s ease-out forwards`;
+                }
+            });
+        },
+        { threshold: 0.2 }
+    );
+
+    cards.forEach(card => reveal.observe(card));
+
+          
+
+
+    // this is steps part
+/* Slide-up stagger animation on scroll */
+                    const snapSections = document.querySelectorAll('.snap-section');
+
+const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach(entry => {
+                            if (!entry.isIntersecting) return;
+
+                            const section = entry.target;
+                            section.classList.add('is-visible');
+
+                            // stagger animation for items inside
+                            section.querySelectorAll('[data-stagger-delay]').forEach(item => {
+                                const delay = parseInt(item.getAttribute('data-stagger-delay') || '0', 10);
+
+                                item.style.transition = `opacity 0.6s ease-out ${delay}ms, transform 0.6s ease-out ${delay}ms`;
+                                item.style.opacity = "1";
+                                item.style.transform = "translateY(0)";
+                            });
+
+                            observer.unobserve(section);  // animate once
+                        });
+}, {
+                        threshold: 0.45
+});
+
+snapSections.forEach(section => {
+                        section.querySelectorAll('[data-stagger-delay]').forEach(item => {
+                            item.style.opacity = "0";
+                            item.style.transform = "translateY(30px)";
+                        });
+
+                    observer.observe(section);
+});
+         
+            </script>
+
+</body>
+
+</html>
